@@ -98,7 +98,7 @@ static const value_guint PacketActionRequestLength[] = {
 	{ USER_ROOM_UPDATE_USER,		5		},
 	{ USER_ROOM_UPDATE_SLOT,		5		},
 	{ USER_ROOM_CHANGE_PASS,		69		},
-  
+
 	{ USER_SLOT_CREATE,				6		},
 	{ USER_SLOT_DELETE,				6		},
 	{ USER_SLOT_SWAP,				7		},
@@ -169,8 +169,7 @@ static guint32 dissect_pawned_request(proto_tree *pawned_tree, tvbuff_t *tvb, gu
 	guint8 action = tvb_get_guint8(tvb, offset);
 	offset += 1;
 
-	switch(action)
-	{
+	switch (action) {
 		case USER_ROOM_JOIN:
 			proto_tree_add_item(pawned_tree, hf_pawned_room, tvb, offset, 4, TRUE);
 			offset += 4;
@@ -395,8 +394,7 @@ static guint32 dissect_pawned_response(proto_tree *pawned_tree, tvbuff_t *tvb, g
 	guint8 action = tvb_get_guint8(tvb, offset);
 	offset += 1;
 
-	switch(action)
-	{
+	switch (action) {
 		case USER_ROOM_JOIN:
 			proto_tree_add_item(pawned_tree, hf_pawned_room, tvb, offset, 4, TRUE);
 			offset += 4;
@@ -573,11 +571,11 @@ static void dissect_pawned(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 void proto_register_pawned(void)
 {
 	/* A header field is something you can search/filter on.
-	* 
-	* We create a structure to register our fields. It consists of an
-	* array of hf_register_info structures, each of which are of the format
-	* {&(field id), {name, abbrev, type, display, strings, bitmask, blurb, HFILL}}.
-	*/
+	 *
+	 * We create a structure to register our fields. It consists of an
+	 * array of hf_register_info structures, each of which are of the format
+	 * {&(field id), {name, abbrev, type, display, strings, bitmask, blurb, HFILL}}.
+	 */
 	static hf_register_info hf[] = {
 		{ &hf_pawned_data,
 			{ "Unknown Data", "pawned.data", FT_NONE, BASE_NONE, NULL, 0x0, "Unknown Data", HFILL }
@@ -662,13 +660,10 @@ void proto_reg_handoff_pawned(void)
 	static int pawned_initialized = FALSE;
 	static dissector_handle_t pawned_handle;
 
-	if (!pawned_initialized)
-	{
+	if (!pawned_initialized) {
 		pawned_handle = create_dissector_handle(dissect_pawned, proto_pawned);
 		pawned_initialized = TRUE;
-	}
-	else
-	{
+	} else {
 		dissector_delete_uint("tcp.port", TCP_PORT_PAWNED, pawned_handle);
 	}
 
