@@ -669,8 +669,8 @@ void proto_reg_handoff_pawned(void)
 	}
 	else
 	{
-		dissector_delete("tcp.port", TCP_PORT_PAWNED, pawned_handle);
+		dissector_delete_uint("tcp.port", TCP_PORT_PAWNED, pawned_handle);
 	}
 
-	dissector_add("tcp.port", TCP_PORT_PAWNED, pawned_handle);
+	dissector_add_uint("tcp.port", TCP_PORT_PAWNED, pawned_handle);
 }
