@@ -524,7 +524,7 @@ static guint get_pawned_message_len(packet_info *pinfo, tvbuff_t *tvb, int offse
 				return PacketActionResponseLength[i].guint;
 	}
 
-	return (guint)(tvb_length(tvb)-offset);
+	return (guint) tvb_length_remaining(tvb, offset);
 }
 
 
@@ -544,11 +544,11 @@ static void dissect_pawned_struct(tvbuff_t *tvb, packet_info *pinfo, proto_tree 
 
 	if (check_col(pinfo->cinfo, COL_INFO)) {
 		col_clear(pinfo->cinfo, COL_INFO);
-		col_add_fstr(pinfo->cinfo, COL_INFO, "%d > %d - %s %s", 
-			pinfo->srcport, 
-			pinfo->destport, 
-				(pinfo->match_port == pinfo->destport || TCP_PORT_PAWNED == pinfo->destport) ? "Request" : "Response", 
-				val_to_str(action, PacketActionNames, "Unknown Action: 0x%02x")
+		col_add_fstr(pinfo->cinfo, COL_INFO, "%d > %d - %s %s",
+			pinfo->srcport,
+			pinfo->destport,
+			(pinfo->match_port == pinfo->destport || TCP_PORT_PAWNED == pinfo->destport) ? "Request" : "Response",
+			val_to_str(action, PacketActionNames, "Unknown Action: 0x%02x")
 		);
 	}
 
@@ -651,8 +651,8 @@ void proto_register_pawned(void)
 	};
 
 	proto_pawned = proto_register_protocol("pawned Protocol", PROTO_TAG_PAWNED, "pawned");
-	proto_register_field_array(proto_pawned, hf, array_length (hf));
-	proto_register_subtree_array(ett, array_length (ett));
+	proto_register_field_array(proto_pawned, hf, array_length(hf));
+	proto_register_subtree_array(ett, array_length(ett));
 
 	register_dissector("pawned", dissect_pawned, proto_pawned);
 }
